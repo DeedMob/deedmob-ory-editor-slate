@@ -1,0 +1,55 @@
+{
+  "name": "ory-editor-plugins-slate",
+  "version": "0.0.0",
+  "main": "./lib/index.js",
+  "author": "ORY GmbH",
+  "license": "GNU Lesser General Public License v3.0",
+  "scripts": {
+    "build": "npm-run-all --parallel build:lib build:css",
+    "build:watch": "npm-run-all --parallel build:lib:watch build:css:watch",
+    "build:lib": "babel ./src --source-maps --ignore test.js --out-dir ./lib",
+    "build:lib:watch": "npm run build:lib -- --watch",
+    "build:css": "postcss -c ./postcss.config.js --dir lib/ src/index.css",
+    "build:css:watch": "npm run build:css -- -w",
+    "prebuild": "npm run clean",
+    "clean": "rimraf \"lib/*\"",
+    "flow:generate": "flow-typed install  --flowVersion=0.79.1"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "^1.5.1",
+    "@material-ui/icons": "^2.0.3",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "dependencies": {
+    "babel-preset-react-app": "^3.1.1",
+    "deep-rename-keys": "^0.2.1",
+    "immutable": "3.8.2",
+    "ory-editor-core": "0.0.0",
+    "ory-editor-ui": "0.0.0",
+    "parse5": "^3.0.2",
+    "ramda": "^0.24.1",
+    "react-portal": "4.1.5",
+    "react-scripts": "^1.1.4",
+    "redux-undo": "1.0.0-beta9-7",
+    "selection-position": "^1.0.0",
+    "slate": "^0.37.3",
+    "slate-edit-blockquote": "^0.6.1",
+    "slate-edit-list": "^0.12.0",
+    "slate-html-serializer": "0.6.21",
+    "slate-plain-serializer": "^0.5.30",
+    "slate-react": "^0.15.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "postcss-cli": "^6.0.0",
+    "postcss-import": "^12.0.0",
+    "postcss-nested": "^3.0.0",
+    "postcss-preset-env": "^5.3.0",
+    "rimraf": "^2.6.2"
+  }
+}
