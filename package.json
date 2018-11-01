@@ -1,5 +1,5 @@
 {
-  "name": "ory-editor-plugins-slate",
+  "name": "deedmob-ory-editor-slate",
   "version": "0.0.0",
   "main": "./lib/index.js",
   "author": "ORY GmbH",
