@@ -20,19 +20,19 @@
  *
  */
 
-module.exports = ctx => ({
-  map: ctx.options.map,
-  parser: ctx.options.parser,
-  plugins: {
-    "postcss-import": { root: ctx.file.dirname },
-    "postcss-preset-env": {
-      stage: 0,
-      features: {
-        "custom-properties": {
-          appendVariables: true,
-          variables: require("./postcss.colors.js")
-        }
-      }
-    }
-  }
-});
+import * as React from 'react';
+import { RenderNodeProps } from 'slate-react';
+import { Block } from 'slate';
+
+const Link: React.SFC<RenderNodeProps> = ({ attributes, children, node }) => {
+  const { data } = node as Block;
+  const href = data.get('href');
+
+  return (
+    <a {...attributes} href={href}>
+      {children}
+    </a>
+  );
+};
+
+export default Link;

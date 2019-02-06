@@ -20,19 +20,18 @@
  *
  */
 
-module.exports = ctx => ({
-  map: ctx.options.map,
-  parser: ctx.options.parser,
-  plugins: {
-    "postcss-import": { root: ctx.file.dirname },
-    "postcss-preset-env": {
-      stage: 0,
-      features: {
-        "custom-properties": {
-          appendVariables: true,
-          variables: require("./postcss.colors.js")
-        }
-      }
-    }
-  }
-});
+import * as React from 'react';
+import { RenderNodeProps } from 'slate-react';
+import { Block } from 'slate';
+
+const Paragraph: React.SFC<RenderNodeProps> = props => {
+  const { children, attributes } = props;
+  const align = (props.node as Block).data.get('align');
+  return (
+    <p {...attributes} style={{ textAlign: align }}>
+      {children}
+    </p>
+  );
+};
+
+export default Paragraph;

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "rootDirs": ["src"],
+    "outDir": "lib",
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "target": "es5",
+    "module": "commonjs",
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "noUnusedLocals": true,
+    "declaration": true,
+    "declarationMap": false,
+    "composite": true,
+    "lib": ["es7", "dom"],
+    "types": ["node", "jest"]
+  },
+  "include": ["src"],
+  "exclude": ["lib", "node_modules", "src/**/__tests__/**/*.*"]
+}
