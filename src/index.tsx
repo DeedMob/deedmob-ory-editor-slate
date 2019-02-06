@@ -20,36 +20,32 @@
  *
  */
 
-import Subject from '@material-ui/icons/Subject';
-import { compose, flatten, map, prop } from 'ramda';
-import Html from 'slate-html-serializer';
-import * as React from 'react';
-import Component from './Component';
-import Plugin from './plugins/Plugin';
-import * as hooks from './hooks';
-import parse5 from 'parse5';
-import v002 from './migrations/v002';
-import { Value } from 'slate';
-import { PluginButtonProps } from './plugins/Plugin';
-import { ContentPluginConfig } from 'ory-editor-core/lib/service/plugin/classes';
-import { SlateState } from './types/state';
-import { SlateProps } from './types/component';
-import { SlateSettings } from './types/settings';
-import { pathOr } from 'ramda/src/pathOr';
-import { ActionTypes } from 'redux-undo';
-import { AnyAction } from 'redux';
+import Subject from "@material-ui/icons/Subject";
+import { compose, flatten, map, prop } from "ramda";
+import * as React from "react";
+import Component from "./Component";
+import Plugin from "./plugins/Plugin";
+import * as hooks from "./hooks";
+import v002 from "./migrations/v002";
+import { Value } from "slate";
+import { PluginButtonProps } from "./plugins/Plugin";
+import { ContentPluginConfig } from "ory-editor-core/lib/service/plugin/classes";
+import { SlateState } from "./types/state";
+import { SlateProps } from "./types/component";
+import { SlateSettings } from "./types/settings";
+import { pathOr } from "ramda/src/pathOr";
+import { ActionTypes } from "redux-undo";
+import { AnyAction } from "redux";
+import { html } from "./hooks";
 
 const createPlugins = compose(
   flatten,
-  map(prop('plugins'))
+  map(prop("plugins"))
 );
 
 export const createInitialState = hooks.createInitialState;
 
-export const html = new Html({
-  rules: [...hooks.defaultPlugins, hooks.lineBreakSerializer],
-  parseHtml: parse5.parseFragment,
-});
+export { html };
 
 export const defaultPlugins = hooks.defaultPlugins;
 
@@ -59,10 +55,7 @@ export default (
   let settings: SlateSettings = {};
   settings.plugins = (plugins ? plugins : []).concat(createPlugins(plugins));
 
-  const HoverButtons = ({
-    editorState,
-    editor,
-  }: PluginButtonProps) => (
+  const HoverButtons = ({ editorState, editor }: PluginButtonProps) => (
     <div>
       {plugins &&
         plugins.map(
@@ -81,10 +74,7 @@ export default (
 
   settings.HoverButtons = HoverButtons;
 
-  const ToolbarButtons = ({
-    editorState,
-    editor,
-  }: PluginButtonProps) => (
+  const ToolbarButtons = ({ editorState, editor }: PluginButtonProps) => (
     <div>
       {plugins &&
         plugins.map(
@@ -105,7 +95,7 @@ export default (
     <Component {...cellProps} {...settings} />
   );
   const StaticComponent = ({
-    state: { editorState = {} as Value } = {},
+    state: { editorState = {} as Value } = {}
   }: SlateProps) => (
     <div
       className="ory-plugins-content-slate-container"
@@ -116,11 +106,11 @@ export default (
     Component: Slate,
     StaticComponent,
 
-    name: 'ory/editor/core/content/slate',
-    version: '0.0.2',
+    name: "ory/editor/core/content/slate",
+    version: "0.0.2",
     IconComponent: <Subject />,
-    text: 'Text',
-    description: 'An advanced rich text area.',
+    text: "Text",
+    description: "An advanced rich text area.",
 
     allowInlineNeighbours: true,
 
@@ -150,7 +140,7 @@ export default (
       if (
         (action.type === ActionTypes.UNDO ||
           action.type === ActionTypes.REDO) &&
-        pathOr(false, ['content', 'state', 'editorState'], state)
+        pathOr(false, ["content", "state", "editorState"], state)
       ) {
         return {
           ...state,
@@ -159,10 +149,10 @@ export default (
             state: {
               ...state.content.state,
               editorState: state.content.state.editorState.merge({
-                isNative: false,
-              }),
-            },
-          },
+                isNative: false
+              })
+            }
+          }
         };
       }
       return state;
@@ -180,6 +170,6 @@ export default (
     // merge = hooks.merge
     // split = hooks.split
 
-    migrations: [v002],
+    migrations: [v002]
   };
 };

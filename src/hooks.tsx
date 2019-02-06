@@ -20,30 +20,29 @@
  *
  */
 
-import { List } from 'immutable';
-import head from 'ramda/src/head';
-import map from 'ramda/src/map';
-import path from 'ramda/src/path';
-import reduce from 'ramda/src/reduce';
-import tail from 'ramda/src/tail';
-import React from 'react';
-import AlignmentPlugin from './plugins/alignment';
-import BlockquotePlugin from './plugins/blockquote';
-import CodePlugin from './plugins/code/index';
-import EmphasizePlugin from './plugins/emphasize';
-import HeadingsPlugin from './plugins/headings';
-import LinkPlugin from './plugins/link/index';
-import ListsPlugin from './plugins/lists';
-import ParagraphPlugin, { P } from './plugins/paragraph/index';
-import parse5 from 'parse5';
-import Plugin from './plugins/Plugin';
+import { List } from "immutable";
+import head from "ramda/src/head";
+import map from "ramda/src/map";
+import path from "ramda/src/path";
+import reduce from "ramda/src/reduce";
+import tail from "ramda/src/tail";
+import React from "react";
+import AlignmentPlugin from "./plugins/alignment";
+import BlockquotePlugin from "./plugins/blockquote";
+import CodePlugin from "./plugins/code/index";
+import EmphasizePlugin from "./plugins/emphasize";
+import HeadingsPlugin from "./plugins/headings";
+import LinkPlugin from "./plugins/link/index";
+import ListsPlugin from "./plugins/lists";
+import ParagraphPlugin, { P } from "./plugins/paragraph/index";
+import Plugin from "./plugins/Plugin";
 
 // FIXME #126
-import { Document, Value, BlockJSON, ValueJSON } from 'slate';
-import Html from 'slate-html-serializer';
-import Plain from 'slate-plain-serializer';
-import { SlateState } from './types/state';
-import { AbstractCell } from 'ory-editor-core/lib/types/editable';
+import { Document, Value, BlockJSON, ValueJSON } from "slate";
+import Html from "slate-html-serializer";
+import Plain from "slate-plain-serializer";
+import { SlateState } from "./types/state";
+import { AbstractCell } from "ory-editor-core/lib/types/editable";
 
 const DEFAULT_NODE = P;
 
@@ -55,42 +54,41 @@ export const defaultPlugins: Plugin[] = [
   new CodePlugin({ DEFAULT_NODE }),
   new ListsPlugin({ DEFAULT_NODE }),
   new BlockquotePlugin({ DEFAULT_NODE }),
-  new AlignmentPlugin({ DEFAULT_NODE }),
+  new AlignmentPlugin({ DEFAULT_NODE })
 ];
 
 export const lineBreakSerializer = {
   // tslint:disable-next-line:no-any
   deserialize(el: any) {
-    if (el.tagName.toLowerCase() === 'br') {
-      return { object: 'text', text: '\n' };
+    if (el.tagName.toLowerCase() === "br") {
+      return { object: "text", text: "\n" };
     }
-    if (el.nodeName === '#text') {
+    if (el.nodeName === "#text") {
       if (el.value && el.value.match(/<!--.*?-->/)) {
         return;
       }
 
       return {
-        object: 'text',
+        object: "text",
         leaves: [
           {
-            object: 'leaf',
-            text: el.value,
-          },
-        ],
+            object: "leaf",
+            text: el.value
+          }
+        ]
       };
     }
   },
   // tslint:disable-next-line:no-any
   serialize(object: any, children: string) {
-    if (object.type === 'text' || children === '\n') {
+    if (object.type === "text" || children === "\n") {
       return <br />;
     }
-  },
+  }
 };
 
 export const html = new Html({
-  rules: [...defaultPlugins, lineBreakSerializer],
-  parseHtml: parse5.parseFragment,
+  rules: [...defaultPlugins, lineBreakSerializer]
 });
 
 export const createInitialState = () => ({
@@ -98,28 +96,28 @@ export const createInitialState = () => ({
     document: {
       nodes: [
         {
-          object: 'block',
+          object: "block",
           type: P,
           nodes: [
             {
-              object: 'text',
+              object: "text",
               leaves: [
                 {
-                  text: '',
-                },
-              ],
-            },
-          ],
-        } as BlockJSON,
-      ],
-    },
-  }),
+                  text: ""
+                }
+              ]
+            }
+          ]
+        } as BlockJSON
+      ]
+    }
+  })
 });
 
 export const unserialize = ({
   importFromHtml,
   serialized,
-  editorState,
+  editorState
 }: // tslint:disable-next-line:no-any
 SlateState): SlateState => {
   if (serialized) {
@@ -136,14 +134,14 @@ SlateState): SlateState => {
 
 // tslint:disable-next-line:no-any
 export const serialize = ({
-  editorState,
+  editorState
 }: SlateState): { serialized: ValueJSON } => ({
   // tslint:disable-next-line:no-any
-  serialized: (editorState.toJSON as any)(editorState),
+  serialized: (editorState.toJSON as any)(editorState)
 });
 
 export const merge = (states: Object[]): Object => {
-  const nodes = map(path(['editorState', 'document', 'nodes']), states);
+  const nodes = map(path(["editorState", "document", "nodes"]), states);
   const mergedNodes = reduce(
     // tslint:disable-next-line:no-any
     (a: List<any>, b: List<any>) => a.concat(b),
@@ -157,12 +155,12 @@ export const merge = (states: Object[]): Object => {
 };
 
 export const split = (state: Object): Object[] => {
-  const nodes = path(['editorState', 'document', 'nodes'], state);
+  const nodes = path(["editorState", "document", "nodes"], state);
   return nodes
     ? nodes.toArray().map(node => {
         const splittedDocument = Document.create({ nodes: List([node]) });
         const splittedEditorState = Value.create({
-          document: splittedDocument,
+          document: splittedDocument
         });
 
         return { editorState: splittedEditorState };
@@ -209,8 +207,8 @@ export const handleRemoveHotKey = (
   _: Event,
   {
     content: {
-      state: { editorState },
-    },
+      state: { editorState }
+    }
   }: AbstractCell<string>
 ): Promise<void> =>
   new Promise<void>((resolve: Function, reject: Function) =>
@@ -223,8 +221,8 @@ export const handleFocusPreviousHotKey = (
   e: KeyboardEvent,
   {
     content: {
-      state: { editorState },
-    },
+      state: { editorState }
+    }
   }: AbstractCell<string>
 ): Promise<void> => {
   // const isArrowUp = e.keyCode === 38
@@ -255,8 +253,8 @@ export const handleFocusNextHotKey = (
   e: KeyboardEvent,
   {
     content: {
-      state: { editorState },
-    },
+      state: { editorState }
+    }
   }: AbstractCell<string>
 ): Promise<void> => {
   // const isArrowDown = e.keyCode === 40
