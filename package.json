@@ -1,8 +1,8 @@
 {
   "name": "deedmob-ory-editor-slate",
   "version": "0.0.0",
-  "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "main": "./lib/src/index.js",
+  "typings": "./lib/src/index.d.ts",
   "authors": [
     "ORY GmbH",
     "Deedmob B.V."
